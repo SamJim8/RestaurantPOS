@@ -14,6 +14,7 @@ Implementar una base funcional y mantenible para la sección **Mesas**, usando:
 - Vite
 - TypeScript
 - CSS plano (sin Tailwind)
+- jsPDF (generación de PDF descargable)
 
 ## Funcionalidades implementadas
 
@@ -35,7 +36,10 @@ Implementar una base funcional y mantenible para la sección **Mesas**, usando:
    - nota opcional
    - subtotal por ítem
    - total general
-6. **Pagar** -> mesa cambia a `IN_PREPARATION`
+6. **Pagar** abre modal de facturación:
+   - **Consumidor final**: plantilla base + descarga de PDF
+   - **Factura**: solicita nombres, correo, cédula y sector, y descarga de PDF
+7. Confirmación de pago -> mesa cambia a `IN_PREPARATION`
 
 ### Pedido activo
 - Click en mesa no libre abre detalle de pedido activo
@@ -45,6 +49,11 @@ Implementar una base funcional y mantenible para la sección **Mesas**, usando:
 - Al marcar como libre:
   - se limpia el pedido activo
   - se reinicia referencia de la mesa
+
+### Facturación y documento
+- Flujo encapsulado en `BillingDocumentModal`
+- Validación básica para factura (incluye formato de correo)
+- Descarga automática del comprobante PDF antes de cerrar el pago
 
 ## Navegación
 - `Mesas` (implementado)

@@ -27,7 +27,6 @@ export function TablesGrid() {
   const activeOrderTotal = activeOrder
     ? activeOrder.items.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0)
     : 0;
-  const getDate = useMemo(() => new Date().toLocaleString(), []);
 
   const isModalOpen = Boolean(selectedTableId);
 
@@ -106,7 +105,7 @@ export function TablesGrid() {
     setItems([]);
     setSelectedCategory("Bebidas");
     setModalView("TAKE_ORDER");
-    setDraftCreatedAt(getDate);
+    setDraftCreatedAt(new Date().toISOString());
   };
 
   const payOrder = () => {
@@ -224,6 +223,10 @@ export function TablesGrid() {
           <AddProductsFooter
             total={total}
             hasItems={items.length > 0}
+            tableNumber={selectedTable?.number ?? 0}
+            createdAt={draftCreatedAt}
+            peopleCount={peopleCount}
+            items={items}
             onCancelOrderDraft={cancelOrderDraft}
             onPayOrder={payOrder}
           />
