@@ -1,24 +1,41 @@
 .tables-grid {
   display: flex;
   flex-wrap: wrap;
+  align-items: stretch;
   justify-content: center;
-  gap: 22px 28px;
-  max-width: 980px;
+  align-content: flex-start;
+  gap: 16px;
+  width: 100%;
+  max-width: 1020px;
   margin: 0 auto;
-  padding: 10px 0;
+  padding: 8px 0 12px;
+}
+
+@media (min-width: 1201px) {
+  .tables-grid {
+    gap: 18px;
+    padding: 10px 0 14px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .tables-grid {
+    max-width: 820px;
+    gap: 18px;
+  }
 }
 
 @media (max-width: 900px) {
   .tables-grid {
-    gap: 18px 20px;
-    max-width: 760px;
+    gap: 12px;
+    justify-content: center;
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 560px) {
   .tables-grid {
+    gap: 8px;
+    width: 100%;
     justify-content: center;
-    gap: 14px;
-    max-width: 100%;
   }
 }

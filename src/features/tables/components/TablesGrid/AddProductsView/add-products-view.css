@@ -1,61 +1,163 @@
 .add-products-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.2fr;
-  gap: 12px;
+  grid-template-columns: 180px 1.35fr 1fr;
+  gap: 14px;
+  align-items: start;
 }
 
 .col {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 10px;
-  display: grid;
+  border: 1px solid #e6eaef;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
-  align-content: start;
-  min-height: 220px;
-  max-height: 50vh;
+  min-height: 300px;
+  max-height: 56vh;
   overflow: auto;
-}
-
-.col button {
-  text-align: left;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
 }
 
 .col h4 {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
+  font-size: 0.94rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #0f172a;
+}
+
+.col p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.col > button {
+  text-align: left;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  min-height: 42px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.col > button:hover {
+  border-color: #c8d4df;
+  background: #f9fbff;
+  transform: translateY(-1px);
+}
+
+.col > button:active {
+  transform: translateY(0) scale(0.995);
+}
+
+.col > button:focus-visible {
+  outline: 2px solid rgba(15, 118, 110, 0.3);
+  outline-offset: 1px;
 }
 
 .is-active {
-  border: 1px solid #0f766e;
-  color: #0f766e;
-  font-weight: 600;
+  border: 1px solid #0f766e !important;
+  background: #ecfdf5 !important;
+  color: #0f766e !important;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.12);
 }
 
 .item-row {
-  border: 1px dashed #d1d5db;
-  border-radius: 8px;
-  padding: 8px;
-  display: grid;
-  gap: 6px;
+  border: 1px solid #dfe5ec;
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.item-row:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.item-row p:first-child {
+  font-weight: 700;
+  color: #111827;
+}
+
+.item-row p:nth-child(2),
+.item-row p:nth-child(3) {
+  color: #4b5563;
+  font-size: 0.9rem;
 }
 
 .item-row input {
   width: 100%;
-  padding: 8px;
+  min-height: 38px;
+  padding: 8px 10px;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.item-row input:focus-visible {
+  outline: 2px solid rgba(15, 118, 110, 0.25);
+  border-color: #0f766e;
+  background: #ffffff;
 }
 
 .qty-actions {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .qty-actions button {
-  min-height: 36px;
+  min-height: 38px;
+}
+
+.qty-actions button:first-child,
+.qty-actions button:nth-child(2) {
+  width: 40px;
+  padding: 0;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.qty-actions button:last-child {
+  margin-left: auto;
+  border-color: #fecaca;
+  color: #b91c1c;
+  background: #fff7f7;
+}
+
+.qty-actions button:last-child:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.qty-actions button:active {
+  transform: scale(0.97);
 }
 
 @media (max-width: 900px) {
   .add-products-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .col {
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .col h4 {
+    margin-bottom: 6px;
   }
 }

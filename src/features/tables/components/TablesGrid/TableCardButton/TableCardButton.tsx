@@ -9,21 +9,23 @@ const statusLabel = {
 
 type TableCardButtonProps = {
   table: RestaurantTable;
-  index: number;
   onClick: (tableId: string) => void;
 };
 
-export function TableCardButton({ table, index, onClick }: TableCardButtonProps) {
-  const layoutClass = `layout-${(index % 4) + 1}`;
-
+export function TableCardButton({ table, onClick }: TableCardButtonProps) {
   return (
     <button
       type="button"
-      className={`table-card table-card--${table.status} ${layoutClass}`}
+      className={`table-card table-card--${table.status}`}
       onClick={() => onClick(table.id)}
     >
-      <span className="table-card__number">Mesa {table.number}</span>
-      <span className="table-card__status">{statusLabel[table.status]}</span>
+      <span className="table-card__label">Mesa</span>
+      <span className="table-card__number">{table.number}</span>
+      <span
+        className={`table-card__status-badge table-card__status-badge--${table.status}`}
+      >
+        {statusLabel[table.status]}
+      </span>
     </button>
   );
 }

@@ -1,86 +1,163 @@
 .table-card {
-  border: 1px solid transparent;
-  text-align: center;
-  cursor: pointer;
-  background: #fff;
+  position: relative;
+  overflow: hidden;
+  width: clamp(190px, 20vw, 230px);
   aspect-ratio: 1 / 1;
+  flex: 0 1 clamp(190px, 20vw, 230px);
+  max-width: 230px;
+  border: 1px solid var(--border);
   border-radius: 50%;
-  width: clamp(120px, 14vw, 150px);
-  flex: 0 1 clamp(120px, 14vw, 150px);
+  padding: 18px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 110px;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-align: center;
+  cursor: pointer;
+  background: linear-gradient(165deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+@media (max-width: 1200px) {
+  .table-card {
+    width: clamp(165px, 20vw, 198px);
+    flex-basis: clamp(165px, 20vw, 198px);
+    max-width: 198px;
+    padding: 14px;
+  }
+}
+
+.table-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(15, 118, 110, 0.12), transparent 55%);
+  pointer-events: none;
+}
+
+.table-card__label {
+  position: relative;
+  z-index: 1;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.table-card__status-badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  margin-top: 10px;
+  padding: 5px 11px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  border: 1px solid transparent;
+  white-space: nowrap;
 }
 
 .table-card__number {
-  font-weight: 700;
-}
-
-.table-card__status {
-  font-size: 0.9rem;
+  position: relative;
+  z-index: 1;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1;
+  color: #0f172a;
+  margin-top: 8px;
 }
 
 .table-card--FREE {
-  border-color: #000000;
-  background: #f9f9f9;
-  color: #000000;
+  border-color: #d4d4d8;
 }
 
 .table-card--IN_PREPARATION {
-  border-color: #fcd34d;
-  background: #fffbeb;
-  color: #92400e;
+  border-color: #fbbf24;
+  box-shadow: 0 10px 24px rgba(245, 158, 11, 0.2);
 }
 
 .table-card--DISPATCHED {
-  border-color: #229e0c;
-  background: #edffef;
-  color: #04511a;
+  border-color: #34d399;
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.18);
 }
 
-.table-card:nth-child(4n + 2),
-.table-card:nth-child(4n + 3) {
-  transform: translateY(8px);
+.table-card__status-badge--FREE {
+  background: #f4f4f5;
+  border-color: #d4d4d8;
+  color: #52525b;
+}
+
+.table-card__status-badge--IN_PREPARATION {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+.table-card__status-badge--DISPATCHED {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+  color: #065f46;
 }
 
 .table-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.14);
+}
+
+.table-card:active {
+  transform: translateY(-1px) scale(0.985);
+}
+
+.table-card:focus-visible {
+  outline: 3px solid rgba(15, 118, 110, 0.35);
+  outline-offset: 3px;
 }
 
 @media (max-width: 900px) {
-  .table-card:nth-child(4n + 2),
-  .table-card:nth-child(4n + 3) {
-    transform: translateY(6px);
-  }
-
   .table-card {
-    max-width: 140px;
+    width: clamp(150px, 31vw, 190px);
+    flex-basis: clamp(150px, 31vw, 190px);
+    max-width: 190px;
+    padding: 14px;
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 560px) {
   .table-card {
-    width: clamp(108px, 40vw, 130px);
-    flex-basis: clamp(108px, 40vw, 130px);
-    max-width: 125px;
-    min-height: 95px;
-  }
-
-  .table-card:nth-child(4n + 2),
-  .table-card:nth-child(4n + 3) {
-    transform: none;
+    width: clamp(112px, 31vw, 132px);
+    flex-basis: clamp(112px, 31vw, 132px);
+    max-width: 132px;
+    padding: 10px;
   }
 
   .table-card__number {
-    font-size: 0.95rem;
+    font-size: clamp(1.45rem, 6vw, 1.9rem);
   }
 
-  .table-card__status {
-    font-size: 0.78rem;
+  .table-card__label {
+    font-size: 0.68rem;
+  }
+
+  .table-card__status-badge {
+    margin-top: 8px;
+    padding: 4px 8px;
+    font-size: 0.66rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .table-card {
+    width: clamp(100px, 29vw, 114px);
+    flex-basis: clamp(100px, 29vw, 114px);
+    max-width: 114px;
+    padding: 8px;
+  }
+
+  .table-card__number {
+    font-size: clamp(1.25rem, 5.2vw, 1.6rem);
   }
 }

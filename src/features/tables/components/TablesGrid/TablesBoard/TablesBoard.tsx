@@ -10,13 +10,8 @@ type TablesBoardProps = {
 export function TablesBoard({ tables, onTableClick }: TablesBoardProps) {
   return (
     <div className="tables-grid">
-      {tables.map((table, index) => (
-        <TableCardButton
-          key={table.id}
-          table={table}
-          index={index}
-          onClick={onTableClick}
-        />
+      {tables.map((table) => (
+        <TableCardButton key={table.id} table={table} onClick={onTableClick} />
       ))}
     </div>
   );

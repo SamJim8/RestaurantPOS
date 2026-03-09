@@ -17,37 +17,57 @@ export function TakeOrderView({
   onPeopleCountChange,
   onGoToAddProducts
 }: TakeOrderViewProps) {
+  const dateLabel = draftCreatedAt
+    ? new Date(draftCreatedAt).toLocaleString()
+    : "-";
+
+  const decreasePeople = () => {
+    onPeopleCountChange(Math.max(1, peopleCount - 1));
+  };
+
+  const increasePeople = () => {
+    onPeopleCountChange(peopleCount + 1);
+  };
+
   return (
     <div className="take-order">
-      <p>
-        <strong>Mesa:</strong> {tableNumber}
-      </p>
-      <p>
-        <strong>Fecha:</strong>{" "}
-        {draftCreatedAt ? new Date(draftCreatedAt).toLocaleString() : "-"}
-      </p>
+      <section className="take-order__header-card">
+        <p className="take-order__eyebrow">Nueva Comanda</p>
+        <h4 className="take-order__table-title">Mesa {tableNumber}</h4>
+        <p className="take-order__date">Creado: {dateLabel}</p>
+      </section>
 
-      <label htmlFor="peopleCount">Número de personas</label>
-      <input
-        id="peopleCount"
-        type="number"
-        min={1}
-        value={peopleCount}
-        onChange={(e) => onPeopleCountChange(Number(e.target.value) || 1)}
-      />
+      <section className="take-order__section">
+        <label htmlFor="peopleCount" className="take-order__label">
+          Número de personas
+        </label>
+        <div className="take-order__counter">
+          <button type="button" onClick={decreasePeople} aria-label="Reducir personas">
+            -
+          </button>
+          <input
+            id="peopleCount"
+            type="number"
+            min={1}
+            value={peopleCount}
+            onChange={(e) => onPeopleCountChange(Number(e.target.value) || 1)}
+          />
+          <button type="button" onClick={increasePeople} aria-label="Aumentar personas">
+            +
+          </button>
+        </div>
+      </section>
 
-      <div className="order-summary">
-        <p>
-          <strong>Resumen del pedido</strong>
-        </p>
+      <section className="order-summary">
+        <p className="order-summary__title">Resumen del pedido</p>
         {itemsCount === 0 ? (
-          <p>Aún no hay productos.</p>
+          <p className="order-summary__detail">Aún no hay productos.</p>
         ) : (
-          <p>{itemsCount} producto(s) agregado(s)</p>
+          <p className="order-summary__detail">{itemsCount} producto(s) agregado(s)</p>
         )}
-      </div>
+      </section>
 
-      <button type="button" onClick={onGoToAddProducts}>
+      <button type="button" className="take-order__cta" onClick={onGoToAddProducts}>
         Agregar Productos
       </button>
     </div>
