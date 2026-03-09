@@ -1,0 +1,106 @@
+.tables-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 22px 28px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+.table-card {
+  border: 1px solid transparent;
+  text-align: center;
+  cursor: pointer;
+  background: #fff;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  width: clamp(120px, 14vw, 150px);
+  min-height: 120px;
+  flex: 0 1 clamp(120px, 14vw, 150px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-card__number {
+  font-weight: 700;
+}
+
+.table-card__status {
+  font-size: 0.9rem;
+}
+
+.table-card--FREE {
+  border-color: #000000;
+  background: #f9f9f9;
+  color: #000000;
+}
+
+.table-card--IN_PREPARATION {
+  border-color: #fcd34d;
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.table-card--DISPATCHED {
+  border-color: #229e0c;
+  background: #edffef;
+  color: #04511a;
+}
+
+.table-card:nth-child(4n + 2),
+.table-card:nth-child(4n + 3) {
+  transform: translateY(8px);
+}
+
+@media (max-width: 900px) {
+  .tables-grid {
+    gap: 18px 20px;
+    max-width: 760px;
+  }
+
+  .table-card:nth-child(4n + 2),
+  .table-card:nth-child(4n + 3) {
+    transform: translateY(6px);
+  }
+}
+
+@media (max-width: 520px) {
+  .tables-grid {
+    justify-content: center;
+    gap: 14px;
+    max-width: 100%;
+  }
+
+  .table-card {
+    width: clamp(108px, 40vw, 130px);
+    flex-basis: clamp(108px, 40vw, 130px);
+  }
+
+  .table-card:nth-child(4n + 2),
+  .table-card:nth-child(4n + 3) {
+    transform: none;
+  }
+}
+  
+.take-order {
+  display: grid;
+  gap: 10px;
+}
+
+.take-order input {
+  width: 100%;
+  max-width: 180px;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.order-summary {
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fafafa;
+}
