@@ -1,0 +1,19 @@
+.take-order {
+  display: grid;
+  gap: 10px;
+}
+
+.take-order input {
+  width: 100%;
+  max-width: 180px;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.order-summary {
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fafafa;
+}

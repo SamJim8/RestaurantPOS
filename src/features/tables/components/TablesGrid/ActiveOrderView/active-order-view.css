@@ -1,0 +1,83 @@
+.active-order {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.active-order p {
+  margin: 0;
+}
+
+.active-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.active-order-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  display: grid;
+  gap: 4px;
+}
+
+.active-order-footer {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+}
+
+.active-order-footer strong {
+  font-size: 1.2rem;
+}
+
+.active-order-action {
+  min-height: 40px;
+  padding: 10px 16px;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.active-order-action--dispatch {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.active-order-action--dispatch:hover {
+  background: var(--primary-strong);
+  border-color: var(--primary-strong);
+}
+
+.active-order-action--free {
+  background: #fff;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.active-order-action--free:hover {
+  background: #f8fafc;
+}
+
+@media (max-width: 520px) {
+  .active-order-footer {
+    flex-direction: column;
+    align-items: stretch;
+    padding-bottom: 2px;
+  }
+
+  .active-order-action {
+    width: 100%;
+  }
+}

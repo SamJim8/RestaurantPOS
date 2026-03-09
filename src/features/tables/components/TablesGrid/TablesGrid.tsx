@@ -1,18 +1,16 @@
 import { useMemo, useState } from "react";
 import { initialTables } from "../../data/tables.data";
-import "./tables-grid.css";
 import { Modal } from "../../../../shared/components/Modal/Modal";
-import { products, productCategories } from "../../data/products.data";
+import { products } from "../../data/products.data";
 import type { OrderItem, ProductCategory } from "../../types/order.types";
 import type { Order } from "../../types/order.types";
+import { TablesBoard } from "./TablesBoard/TablesBoard";
+import { TakeOrderView } from "./TakeOrderView/TakeOrderView";
+import { AddProductsView } from "./AddProductsView/AddProductsView";
+import { AddProductsFooter } from "./AddProductsFooter/AddProductsFooter";
+import { ActiveOrderView } from "./ActiveOrderView/ActiveOrderView";
 
-
-
-const statusLabel = {
-  FREE: "Libre",
-  IN_PREPARATION: "En Preparación",
-  DISPATCHED: "Despachado"
-} as const;
+type ModalView = "TAKE_ORDER" | "ADD_PRODUCTS" | "ACTIVE_ORDER";
 
 export function TablesGrid() {
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
@@ -20,10 +18,6 @@ export function TablesGrid() {
   const [tables, setTables] = useState(initialTables);
   const [ordersByTableId, setOrdersByTableId] = useState<Record<string, Order>>({});
   const [draftCreatedAt, setDraftCreatedAt] = useState<string>("");
-
-
-
-
 
   const selectedTable = useMemo(
     () => tables.find((t) => t.id === selectedTableId) ?? null,
@@ -33,11 +27,9 @@ export function TablesGrid() {
   const activeOrderTotal = activeOrder
     ? activeOrder.items.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0)
     : 0;
-  const getDate = useMemo(() => new Date().toLocaleString(), [])
+  const getDate = useMemo(() => new Date().toLocaleString(), []);
 
   const isModalOpen = Boolean(selectedTableId);
-
-  type ModalView = "TAKE_ORDER" | "ADD_PRODUCTS" | "ACTIVE_ORDER";
 
   const [modalView, setModalView] = useState<ModalView>("TAKE_ORDER");
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>("Bebidas");
@@ -146,7 +138,6 @@ export function TablesGrid() {
       )
     );
 
-    // reset modal draft
     setSelectedTableId(null);
     setPeopleCount(1);
     setItems([]);
@@ -188,7 +179,6 @@ export function TablesGrid() {
       return next;
     });
 
-    // reset modal
     setSelectedTableId(null);
     setModalView("TAKE_ORDER");
     setItems([]);
@@ -196,28 +186,11 @@ export function TablesGrid() {
     setDraftCreatedAt("");
   };
 
-
   return (
     <section>
       <h2>Mesas</h2>
 
-      <div className="tables-grid">
-        {tables.map((table, index) => {
-          const layoutClass = `layout-${(index % 4) + 1}`;
-
-          return (
-            <button
-              key={table.id}
-              type="button"
-              className={`table-card table-card--${table.status} ${layoutClass}`}
-              onClick={() => handleTableClick(table.id)}
-            >
-              <span className="table-card__number">Mesa {table.number}</span>
-              <span className="table-card__status">{statusLabel[table.status]}</span>
-            </button>
-          );
-        })}
-      </div>
+      <TablesBoard tables={tables} onTableClick={handleTableClick} />
 
       <Modal
         isOpen={isModalOpen}
@@ -225,146 +198,51 @@ export function TablesGrid() {
         onClose={closeTakeOrderModal}
       >
         {modalView === "TAKE_ORDER" && (
-          <div className="take-order">
-            <p><strong>Mesa:</strong> {selectedTable?.number}</p>
-            <p><strong>Fecha:</strong> {draftCreatedAt ? new Date(draftCreatedAt).toLocaleString() : "-"}</p>
-
-
-            <label htmlFor="peopleCount">Número de personas</label>
-            <input
-              id="peopleCount"
-              type="number"
-              min={1}
-              value={peopleCount}
-              onChange={(e) => setPeopleCount(Number(e.target.value) || 1)}
-            />
-
-            <div className="order-summary">
-              <p><strong>Resumen del pedido</strong></p>
-              {items.length === 0 ? (
-                <p>Aún no hay productos.</p>
-              ) : (
-                <p>{items.length} producto(s) agregado(s)</p>
-              )}
-            </div>
-
-            <button type="button" onClick={() => setModalView("ADD_PRODUCTS")}>
-              Agregar Productos
-            </button>
-          </div>
+          <TakeOrderView
+            tableNumber={selectedTable?.number}
+            draftCreatedAt={draftCreatedAt}
+            peopleCount={peopleCount}
+            itemsCount={items.length}
+            onPeopleCountChange={setPeopleCount}
+            onGoToAddProducts={() => setModalView("ADD_PRODUCTS")}
+          />
         )}
 
         {modalView === "ADD_PRODUCTS" && (
-          <div className="add-products-grid">
-            <aside className="col">
-              <h4>Categorías</h4>
-              {productCategories.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  className={cat === selectedCategory ? "is-active" : ""}
-                  onClick={() => setSelectedCategory(cat)}
-                >
-                  {cat}
-                </button>
-              ))}
-            </aside>
-
-            <section className="col">
-              <h4>Productos</h4>
-              {products
-                .filter((p) => p.category === selectedCategory)
-                .map((p) => (
-                  <button key={p.id} type="button" onClick={() => addProduct(p.id)}>
-                    {p.name} - ${p.price.toFixed(2)}
-                  </button>
-                ))}
-            </section>
-
-            <section className="col">
-              <h4>Resumen</h4>
-              {items.length === 0 && <p>Sin productos.</p>}
-
-              {items.map((item) => (
-                <div key={item.productId} className="item-row">
-                  <p>{item.name}</p>
-                  <p>${item.unitPrice.toFixed(2)} x {item.quantity}</p>
-                  <p>Subtotal: ${(item.unitPrice * item.quantity).toFixed(2)}</p>
-
-                  <div className="qty-actions">
-                    <button type="button" onClick={() => changeQty(item.productId, -1)}>-</button>
-                    <button type="button" onClick={() => changeQty(item.productId, +1)}>+</button>
-                    <button type="button" onClick={() => removeItem(item.productId)}>Eliminar</button>
-                  </div>
-
-                  <input
-                    type="text"
-                    placeholder="Nota opcional"
-                    value={item.notes ?? ""}
-                    onChange={(e) => updateNotes(item.productId, e.target.value)}
-                  />
-                </div>
-              ))}
-            </section>
-          </div>
+          <AddProductsView
+            selectedCategory={selectedCategory}
+            items={items}
+            onCategoryChange={setSelectedCategory}
+            onAddProduct={addProduct}
+            onChangeQty={changeQty}
+            onRemoveItem={removeItem}
+            onUpdateNotes={updateNotes}
+          />
         )}
 
         {modalView === "ADD_PRODUCTS" && (
-          <div className="add-products-footer">
-            <button type="button" onClick={cancelOrderDraft}>Cancelar Pedido</button>
-            <strong>Total: ${total.toFixed(2)}</strong>
-            <button type="button" onClick={payOrder} disabled={items.length === 0}>
-              Pagar
-            </button>
-
-          </div>
+          <AddProductsFooter
+            total={total}
+            hasItems={items.length > 0}
+            onCancelOrderDraft={cancelOrderDraft}
+            onPayOrder={payOrder}
+          />
         )}
 
         {modalView === "ACTIVE_ORDER" && selectedTable && activeOrder && (
-          <div className="active-order">
-            <p><strong>Mesa:</strong> {selectedTable.number}</p>
-            <p><strong>Fecha:</strong> {new Date(activeOrder.createdAt).toLocaleString()}</p>
-            <p><strong>Personas:</strong> {activeOrder.peopleCount}</p>
-
-            <div className="active-order-list">
-              {activeOrder.items.map((item) => (
-                <div key={item.productId} className="active-order-item">
-                  <p><strong>{item.name}</strong></p>
-                  <p>Cantidad: {item.quantity}</p>
-                  <p>Precio unitario: ${item.unitPrice.toFixed(2)}</p>
-                  <p>Subtotal: ${(item.unitPrice * item.quantity).toFixed(2)}</p>
-                  {item.notes ? <p>Nota: {item.notes}</p> : null}
-                </div>
-              ))}
-            </div>
-
-            <div className="active-order-footer">
-              <strong>Total: ${activeOrderTotal.toFixed(2)}</strong>
-              {selectedTable.status === "IN_PREPARATION" ? (
-                <button type="button" onClick={markAsDispatched}>
-                  Marcar como Despachado
-                </button>
-              ) : (
-                <button type="button" onClick={markAsFree}>
-                  Marcar como Libre
-                </button>
-
-              )}
-
-            </div>
-          </div>
+          <ActiveOrderView
+            selectedTable={selectedTable}
+            activeOrder={activeOrder}
+            activeOrderTotal={activeOrderTotal}
+            onMarkAsDispatched={markAsDispatched}
+            onMarkAsFree={markAsFree}
+          />
         )}
 
         {modalView === "ACTIVE_ORDER" && (!selectedTable || !activeOrder) && (
           <p>No se encontró el pedido activo de esta mesa.</p>
         )}
-
-
-
-
       </Modal>
-
-
     </section>
   );
 }
