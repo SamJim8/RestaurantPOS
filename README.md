@@ -1,73 +1,87 @@
-# React + TypeScript + Vite
+# Restaurant POS (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MVP de gestión de mesas para restaurante, desarrollado con **React + Vite + TypeScript**.
+El foco está en un flujo claro de operación en salón: tomar pedido, procesarlo y liberar mesa.
 
-Currently, two official plugins are available:
+## Objetivo
+Implementar una base funcional y mantenible para la sección **Mesas**, usando:
+- estado local
+- datos estáticos
+- arquitectura por funcionalidad
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack
+- React
+- Vite
+- TypeScript
+- CSS plano (sin Tailwind)
 
-## React Compiler
+## Funcionalidades implementadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Mesas
+- Vista en cuadrícula responsive
+- Estados visuales:
+  - `FREE`
+  - `IN_PREPARATION`
+  - `DISPATCHED`
 
-## Expanding the ESLint configuration
+### Flujo de pedido
+1. Click en mesa `FREE` -> modal **Tomar Pedido**
+2. Ingreso de número de personas
+3. Paso a modal/vista de **Agregar Productos**
+4. Selección por categorías (Bebidas, Desayunos, Asados, Mariscos, Criollo)
+5. Resumen con:
+   - cantidad (+/-)
+   - eliminar ítem
+   - nota opcional
+   - subtotal por ítem
+   - total general
+6. **Pagar** -> mesa cambia a `IN_PREPARATION`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Pedido activo
+- Click en mesa no libre abre detalle de pedido activo
+- Acciones por estado:
+  - `IN_PREPARATION` -> **Marcar como Despachado**
+  - `DISPATCHED` -> **Marcar como Libre**
+- Al marcar como libre:
+  - se limpia el pedido activo
+  - se reinicia referencia de la mesa
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Navegación
+- `Mesas` (implementado)
+- `Historial de Pedidos` (placeholder visual, sin implementación)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Estructura del proyecto
+```text
+src/
+  App.tsx
+  main.tsx
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+  features/
+    tables/
+      components/
+      data/
+      types/
+
+  shared/
+    components/Modal/
+    types/
+
+  styles/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Scripts
+```bash
+npm run dev      # desarrollo
+npm run build    # build de producción
 ```
+
+## Ejecución local
+```bash
+npm install
+npm run dev
+```
+
+## Decisiones técnicas
+- Arquitectura por feature para escalar por dominio
+- `shared/` para componentes y tipos reutilizables
+- Modal reutilizable para mantener consistencia de UI
